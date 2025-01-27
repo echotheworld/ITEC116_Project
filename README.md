@@ -82,7 +82,7 @@ features = {
 
 1️⃣ **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/fastapi-projects.git
+git clone https://github.com/echotheworld/ITEC116_Project.git
 ```
 
 2️⃣ **Install dependencies**
@@ -102,14 +102,6 @@ fastapi run main.py
 
 - **Lab 4 Setup:** Requires environment variables configuration
 - **API Keys:** Secure storage and transmission
-- **Best Practices:** Following OWASP guidelines
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-- 🐛 Report bugs
-- 💡 Suggest features
-- 🔧 Submit pull requests
 
 ## 📝 License
 
