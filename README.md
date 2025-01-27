@@ -47,7 +47,7 @@ Advanced data processing system for user posts and comments.
 </details>
 
 <details>
-<summary><b>Lab 4: Enhanced Todo List API with Auth</b> 🔐</summary>
+<summary><b>Lab 4: Advanced API Implementation/b> 🔐</summary>
 
 Enterprise-level implementation with security features.
 - 🔹 API versioning (v1 & v2)
