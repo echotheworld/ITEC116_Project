@@ -1,205 +1,145 @@
-# Laboratory Activity 2: Working with HTTP actions and API parameters
+# Laboratory Activity #2: To-Do List API
 
-A complete task management system implementing CRUD operations with proper data validation.
+## 📚 Overview
+A comprehensive To-Do List API built with FastAPI, implementing CRUD operations with proper HTTP methods and parameter handling. This project demonstrates best practices in API development, including data validation, error handling, and RESTful principles.
 
 ## 🎯 Objectives
+- Implement different HTTP methods (GET, POST, PATCH, DELETE)
+- Master API parameterization techniques
+- Create a CRUD-based API system
+- Practice proper error handling and validation
+- Apply REST API best practices
 
-- Identify and differentiate different ways to parameterize an API
-- Discuss HTTP methods and their uses based on best practices
-- Use the HTTP methods and parameters to create a simple CRUD simulation API
-
-## 📋 Requirements
-
-### Initial Database
-```python
-task_db = [
-    {"task_id": 1, "task_title": "Laboratory Activity", "task_desc": "Create Lab Act 2", "is_finished": False}
-]
-```
-
-### Endpoints
-- GET `/tasks/{task_id}` - Retrieve a specific task
-- POST `/tasks` - Create a new task
-- PATCH `/tasks/{task_id}` - Update an existing task
-- DELETE `/tasks/{task_id}` - Remove a task
-
-### Response Format
-- Success: `{"status": "ok", ...}`
-- Error: `{"error": "<error message>"}`
-
-### Validation Requirements
-- Null check
-- Negative numbers
-- Empty strings
-- Data type validation
-
-## 💻 Implementation Details
-
-### Data Models
-- **Task**: The main data structure for tasks
-  - `task_id`: Positive integer
-  - `task_title`: Non-empty string
-  - `task_desc`: Non-empty string
-  - `is_finished`: Boolean
-
-### Endpoint Documentation
-
-1. **Get Task**
-   - **Endpoint**: `/tasks/{task_id}`
-   - **Method**: GET
-   - **Parameters**: 
-     - `task_id` (path parameter): Positive integer
-
-2. **Create Task**
-   - **Endpoint**: `/tasks`
-   - **Method**: POST
-   - **Request Body**:
-     ```json
-     {
-       "task_title": "string",
-       "task_desc": "string"
-     }
-     ```
-
-3. **Update Task**
-   - **Endpoint**: `/tasks/{task_id}`
-   - **Method**: PATCH
-   - **Parameters**:
-     - `task_id` (path parameter): Positive integer
-   - **Request Body** (all fields optional):
-     ```json
-     {
-       "task_title": "string",
-       "task_desc": "string",
-       "is_finished": boolean
-     }
-     ```
-
-4. **Delete Task**
-   - **Endpoint**: `/tasks/{task_id}`
-   - **Method**: DELETE
-   - **Parameters**:
-     - `task_id` (path parameter): Positive integer
-
-### Example Usage
-
-1. **Get a specific task**:
-```bash
-curl http://127.0.0.1:8000/tasks/1
-```
-Response:
-```json
-{
-    "status": "ok",
-    "task": {
-        "task_id": 1,
-        "task_title": "Laboratory Activity",
-        "task_desc": "Create Lab Act 2",
-        "is_finished": false
-    }
-}
-```
-
-2. **Create a new task**:
-```bash
-curl -X POST http://127.0.0.1:8000/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"task_title": "New Task", "task_desc": "Task Description"}'
-```
-Response:
-```json
-{
-    "status": "ok",
-    "task": {
-        "task_id": 2,
-        "task_title": "New Task",
-        "task_desc": "Task Description",
-        "is_finished": false
-    }
-}
-```
-
-3. **Update a task**:
-```bash
-curl -X PATCH http://127.0.0.1:8000/tasks/1 \
-  -H "Content-Type: application/json" \
-  -d '{"is_finished": true}'
-```
-Response:
-```json
-{
-    "status": "ok",
-    "task": {
-        "task_id": 1,
-        "task_title": "Laboratory Activity",
-        "task_desc": "Create Lab Act 2",
-        "is_finished": true
-    }
-}
-```
-
-4. **Delete a task**:
-```bash
-curl -X DELETE http://127.0.0.1:8000/tasks/1
-```
-Response:
-```json
-{
-    "status": "ok",
-    "message": "Task deleted successfully"
-}
-```
-
-### Error Handling
-
-1. **Task Not Found**:
-```bash
-curl http://127.0.0.1:8000/tasks/999
-```
-Response:
-```json
-{
-    "error": "Task not found"
-}
-```
-
-2. **Invalid Input**:
-```bash
-curl -X POST http://127.0.0.1:8000/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"task_title": "", "task_desc": ""}'
-```
-Response:
-```json
-{
-    "error": "Validation error: task_title and task_desc cannot be empty"
-}
-```
+## 🛠 Technical Requirements
+- Python 3.7+
+- FastAPI
+- Pydantic
+- Uvicorn (ASGI server)
 
 ## 🚀 Getting Started
-
-1️⃣ **Clone the repository**
+1. Clone the repository:
 ```bash
 git clone https://github.com/echotheworld/ITEC116_Project.git
 cd ITEC116_Project
 cd Lab2
 ```
 
-2️⃣ **Install dependencies**
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3️⃣ **Run the application**
+3. Run the application:
 ```bash
-fastapi run main.py
+uvicorn main:app --reload
 ```
 
-📍 Access the API at `http://127.0.0.1:8000`
-📚 API documentation at `http://127.0.0.1:8000/docs`
+## 📡 API Endpoints
+
+### 1. Get Task
+```http
+GET /tasks/{task_id}
+```
+Retrieves a specific task by ID.
+
+#### Parameters
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| task_id | integer | The unique identifier of the task (must be positive) |
+
+#### Response Example
+```json
+{
+    "status": "ok",
+    "task": {
+        "task_id": 1,
+        "task_title": "Laboratory Activity",
+        "task_desc": "Create Lab Act 2",
+        "is_finished": false
+    }
+}
+```
+
+### 2. Create Task
+```http
+POST /tasks
+```
+Creates a new task.
+
+#### Request Body
+```json
+{
+    "task_title": "New Task",
+    "task_desc": "Task Description"
+}
+```
+
+### 3. Update Task
+```http
+PATCH /tasks/{task_id}
+```
+Updates an existing task.
+
+#### Request Body
+```json
+{
+    "task_title": "Updated Title",
+    "task_desc": "Updated Description",
+    "is_finished": true
+}
+```
+
+### 4. Delete Task
+```http
+DELETE /tasks/{task_id}
+```
+Removes a task by ID.
+
+## 💡 Implementation Details
+- Comprehensive data validation using Pydantic models
+- Error handling with appropriate HTTP status codes
+- In-memory task database with initial seed data
+- Input validation for all endpoints
+- Proper response formatting
+
+## ⚙️ Technical Architecture
+The application uses:
+- FastAPI for robust API development
+- Pydantic models for data validation
+- Type hints for better code clarity
+- HTTPException for error handling
+- BaseModel inheritance for data structures
+
+## 🔒 Data Models
+
+### Task Model
+```python
+{
+    "task_id": int,       # Positive integer
+    "task_title": str,    # Non-empty string
+    "task_desc": str,     # Non-empty string
+    "is_finished": bool   # Task completion status
+}
+```
+
+## 🧪 Testing
+1. Start the server using the instructions above
+2. Access the Swagger UI documentation at `http://127.0.0.1:8000/docs`
+3. Test endpoints using the interactive Swagger interface
+4. Verify proper error handling and validation
+
+## 👨‍💻 Development Best Practices
+- Input validation for all parameters
+- Proper error messages and status codes
+- Clean code organization
+- Comprehensive API documentation
+- Type safety with Pydantic models
+
+## 📝 License
+This project is created as part of ITEC116 coursework.
 
 ---
 
 <div align="center">
-Made with ❤️ for ITEC116 Course
+Made with ❤️ for ITEC116 Laboratory Activity 2
 </div> 
