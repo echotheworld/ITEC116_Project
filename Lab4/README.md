@@ -36,7 +36,7 @@ __pycache__/
 ```bash
 git clone https://github.com/echotheworld/ITEC116_Project.git
 cd ITEC116_Project
-cd Lab1
+cd Lab4
 ```
 
 2. Set up virtual environment:
