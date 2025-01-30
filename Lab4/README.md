@@ -34,8 +34,9 @@ __pycache__/
 ## 🚀 Getting Started
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/echotheworld/ITEC116_Project.git
+cd ITEC116_Project
+cd Lab1
 ```
 
 2. Set up virtual environment:
@@ -53,7 +54,7 @@ pip install -r requirements.txt
 
 4. Run the application:
 ```bash
-uvicorn main:app --reload
+fastapi run main.py
 ```
 
 ## 📡 API Endpoints
