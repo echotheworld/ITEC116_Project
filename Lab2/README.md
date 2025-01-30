@@ -24,14 +24,22 @@ cd ITEC116_Project
 cd Lab2
 ```
 
-2. Install dependencies:
+2. Set up virtual environment:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # For Unix/macOS
+# or
+.venv\Scripts\activate     # For Windows
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the application:
+4. Run the application:
 ```bash
-uvicorn main:app --reload
+fastapi run main.py
 ```
 
 ## 📡 API Endpoints
