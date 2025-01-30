@@ -1,76 +1,128 @@
-# Laboratory Activity #5: Deploying API in Cloud ☁️
+# Laboratory Activity #5: Cloud API Deployment
 
-Final implementation demonstrating cloud deployment of Lab 4's API to Render platform.
+## 📚 Overview
+This project demonstrates the deployment of a FastAPI application to Render, a cloud platform service. It builds upon Laboratory Activity #4, taking the locally developed API and making it accessible worldwide through cloud deployment.
+
+## 🌐 Live API
+- **Base URL**: [https://itec116-feolino.onrender.com](https://itec116-feolino.onrender.com)
+- **API Documentation**: [https://itec116-feolino.onrender.com/docs](https://itec116-feolino.onrender.com/docs)
 
 ## 🎯 Objectives
+- Deploy FastAPI application to Render cloud platform
+- Configure environment variables in cloud environment
+- Implement secure API deployment practices
+- Ensure API accessibility and functionality in production
 
-- Develop and deploy API to a cloud platform
-
-## 📋 Requirements
-
-### Deployment Specifications
-- Platform: Render
-- Domain Format: `itec116_<surname>.onrender.com`
-- API Key Configuration: Must match Lab 4's implementation
-
-### Required Components
-- Deployed API from Lab 4
-- Environment Variables Configuration
-- API Documentation
-- Secure Authentication Setup
+## 🛠 Technical Requirements
+- Python 3.7+
+- FastAPI
+- Render account
+- Git repository
+- requirements.txt file
 
 ## 🚀 Deployment Steps
 
-1️⃣ **Prepare Your Repository**
+### 1. Prepare Your Repository
 ```bash
-git clone https://github.com/echotheworld/ITEC116_Project.git
-cd ITEC116_Project
-cd Lab5
+# Ensure your repository has these files
+requirements.txt
+main.py
+.gitignore
 ```
 
-2️⃣ **Configure Render**
-1. Create a Render account
+### 2. Configure Render
+1. Create a new Web Service
 2. Connect your GitHub repository
-3. Create a new Web Service
-4. Select the Python environment
-5. Configure environment variables:
-   - Add your API key (from Lab 4)
-   - Set Python version
-   - Configure start command
+3. Configure the service:
+   - Name: `itec116-<surname>`
+   - Environment: `Python 3`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `fastapi run main.py`
 
-⚠️ **Important**: Never commit sensitive information like API keys to your repository
+### 3. Set Environment Variables
+1. Navigate to Environment in Render dashboard
+2. Add your API key:
+   ```
+   API_KEY=your_api_key_here
+   ```
 
-## 🌐 Access Points
+## 📡 API Access
 
-### Base URL
+### Base Endpoint
+```http
+GET https://itec116-<surname>.onrender.com/
 ```
-https://itec116-feolino.onrender.com/
+
+### Swagger Documentation
+```http
+GET https://itec116-<surname>.onrender.com/docs
 ```
 
-### API Documentation
+### API Versions
+1. Version 1 (No Authentication)
+```http
+GET https://itec116-<surname>.onrender.com/apiv1/
 ```
-https://itec116-feolino.onrender.com/docs
+
+2. Version 2 (With Authentication)
+```http
+GET https://itec116-<surname>.onrender.com/apiv2/
 ```
 
-## 🔑 Environment Setup
+## 🔒 Security Considerations
+- API Key must be set in Render environment variables
+- Never commit sensitive information to repository
+- Use HTTPS for all API calls
+- Implement proper CORS policies
 
-Configure the following in Render's environment variables:
-- `API_KEY`: Your secure API key (same as Lab 4)
-- `PYTHON_VERSION`: "3.8" or higher
-- `PORT`: "8000"
+## 🧪 Testing Deployed API
+1. Verify base URL accessibility
+2. Test API endpoints through Swagger UI
+3. Validate authentication with API key
+4. Check environment variable configuration
+5. Monitor application logs in Render dashboard
 
-## 📝 Required Output
+## 💡 Implementation Details
+- Cloud platform: Render
+- Automatic deployments from Git
+- Environment variable management
+- Production-grade server configuration
+- Secure HTTPS endpoints
 
-1. Deployed API Link
-   - Format: `itec116_<surname>.onrender.com`
-   - Must be accessible and functional
+## ⚙️ Technical Architecture
+The deployment utilizes:
+- Render's Web Service platform
+- Git-based deployment
+- Environment variable management
+- Automatic HTTPS/SSL
+- Production-ready server configuration
 
-2. API Key (submitted privately)
-   - Must match the key used in Lab 4
-   - Must be properly configured in Render
+## 🔍 Monitoring and Maintenance
+- Monitor application logs
+- Track API performance
+- Monitor error rates
+- Check resource usage
+- Review security alerts
+
+## 👨‍💻 Development Best Practices
+- Use version control
+- Implement CI/CD
+- Secure environment variables
+- Regular monitoring
+- Proper documentation
+
+## 🚨 Troubleshooting
+1. Check Render logs for deployment issues
+2. Verify environment variables
+3. Ensure requirements.txt is complete
+4. Validate API key configuration
+5. Check application startup logs
+
+## 📝 License
+This project is created as part of ITEC116 coursework.
 
 ---
 
 <div align="center">
-Made with ❤️ for ITEC116 Course
+Made with ❤️ for ITEC116 Laboratory Activity 5
 </div> 
