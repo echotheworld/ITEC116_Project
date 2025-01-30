@@ -1,165 +1,165 @@
-# Laboratory Activity #3: Working with JSON 📊
+# Laboratory Activity #3: JSON Processing API
 
-Advanced implementation focusing on JSON data handling and external API integration.
+## 📚 Overview
+An advanced FastAPI application that demonstrates JSON processing capabilities by integrating with external APIs. This project showcases how to fetch, parse, and transform JSON data from external sources, specifically working with user posts and comments from JSONPlaceholder API.
 
 ## 🎯 Objectives
+- Master JSON data format manipulation in API development
+- Implement JSON parsing and traversal using Python
+- Convert Python data structures to JSON format
+- Integrate with external REST APIs
+- Handle complex nested JSON structures
 
-- Familiarize and identify JSON as a primary data format for API development
-- Parse JSON strings and traverse data in the JSON string using Python
-- Convert Python data structures into a valid JSON format
+## 🛠 Technical Requirements
+- Python 3.7+
+- FastAPI
+- Requests library
+- JSON module (Python standard library)
+- Uvicorn (ASGI server)
 
-## 📋 Requirements
-
-### Endpoint Specification
-- Endpoint: `/detailed_post/{userID}`
-- Method: GET
-- Functionality: Show all posts of a specific user and all comments per each post
-- Response: Use appropriate key names based on the value output
-
-### External API Integration
-The application integrates with JSONPlaceholder API endpoints:
-- Posts: `https://jsonplaceholder.typicode.com/posts`
-- Comments: `https://jsonplaceholder.typicode.com/comments`
-
-## 💻 Implementation Details
-
-### External API Integration
-The application uses JSONPlaceholder API for data:
-- **Posts API**: `https://jsonplaceholder.typicode.com/posts`
-  - Returns list of posts with user IDs
-- **Comments API**: `https://jsonplaceholder.typicode.com/comments`
-  - Returns comments for specific posts
-
-### Endpoint Documentation
-
-1. **Get Posts**
-   - **Endpoint**: `/posts`
-   - **Method**: GET
-   - **Optional Parameters**: 
-     - `postId` (query parameter): Filter by specific post ID
-
-2. **Get Comments**
-   - **Endpoint**: `/comments`
-   - **Method**: GET
-   - **Optional Parameters**:
-     - `postId` (query parameter): Filter comments by post ID
-
-3. **Get Detailed Post**
-   - **Endpoint**: `/detailed_post/{userID}`
-   - **Method**: GET
-   - **Parameters**:
-     - `userID` (path parameter): ID of the user to fetch posts for
-
-### Example Usage
-
-1. **Get all posts for a user with their comments**:
+## 🚀 Getting Started
+1. Clone the repository:
 ```bash
-curl http://127.0.0.1:8000/detailed_post/1
+git clone https://github.com/jpcanamaque/itec116_it4e_lab.git
+cd itec116_it4e_lab
+cd lab3
 ```
-Response:
+
+2. Set up virtual environment:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # For Unix/macOS
+# or
+.venv\Scripts\activate     # For Windows
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the application:
+```bash
+uvicorn main:app --reload
+```
+
+## 📡 API Endpoints
+
+### 1. Get All Posts
+```http
+GET /posts/
+```
+Retrieves all posts from JSONPlaceholder API.
+
+#### Query Parameters
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| postId | integer | Optional: Filter posts by specific ID |
+
+### 2. Get Comments
+```http
+GET /comments/
+```
+Retrieves comments from JSONPlaceholder API.
+
+#### Query Parameters
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| postId | integer | Optional: Filter comments by post ID |
+
+### 3. Get Formatted Posts
+```http
+GET /formatted_posts/{userID}
+```
+Retrieves and formats posts for a specific user.
+
+#### Response Example
 ```json
 {
     "userID": 1,
     "posts": [
         {
-            "post_title": "sunt aut facere repellat provident",
-            "post_body": "quia et suscipit suscipit recusandae...",
-            "comments": [
-                {
-                    "postId": 1,
-                    "id": 1,
-                    "name": "id labore ex et quam laborum",
-                    "email": "Eliseo@gardner.biz",
-                    "body": "laudantium enim quasi est quidem..."
-                },
-                // ... more comments
-            ]
-        },
-        // ... more posts
+            "post_title": "Example Title",
+            "post_body": "Example Body"
+        }
     ]
 }
 ```
 
-2. **Get specific post**:
-```bash
-curl http://127.0.0.1:8000/posts?postId=1
+### 4. Get Formatted Comments
+```http
+GET /formatted_comment/{postID}
 ```
-Response:
+Retrieves and formats comments for a specific post.
+
+### 5. Get Detailed Post
+```http
+GET /detailed_post/{userID}
+```
+Retrieves all posts and their comments for a specific user.
+
+#### Response Structure
 ```json
 {
-    "userId": 1,
-    "id": 1,
-    "title": "sunt aut facere repellat provident",
-    "body": "quia et suscipit suscipit recusandae..."
+    "userID": 1,
+    "posts": [
+        {
+            "post_title": "Post Title",
+            "post_body": "Post Content",
+            "comments": [
+                {
+                    "postId": 1,
+                    "id": 1,
+                    "name": "Commenter Name",
+                    "email": "commenter@email.com",
+                    "body": "Comment Content"
+                }
+            ]
+        }
+    ]
 }
 ```
 
-3. **Get comments for a post**:
-```bash
-curl http://127.0.0.1:8000/comments?postId=1
-```
-Response:
-```json
-[
-    {
-        "postId": 1,
-        "id": 1,
-        "name": "id labore ex et quam laborum",
-        "email": "Eliseo@gardner.biz",
-        "body": "laudantium enim quasi est quidem..."
-    },
-    // ... more comments
-]
-```
+## 💡 Implementation Details
+- Integration with JSONPlaceholder API
+- Dynamic JSON response formatting
+- Error handling for API requests
+- Nested JSON structure processing
+- Query parameter support
 
-### Error Handling
+## ⚙️ Technical Architecture
+The application leverages:
+- FastAPI for API endpoint creation
+- Requests library for external API calls
+- Native JSON module for data parsing
+- Type hints for better code clarity
+- HTTPException for error handling
 
-1. **User Not Found**:
-```bash
-curl http://127.0.0.1:8000/detailed_post/999
-```
-Response:
-```json
-{
-    "detail": "User with ID 999 not found or has no posts"
-}
-```
+## 🔄 Data Flow
+1. Client requests data via endpoint
+2. Application calls JSONPlaceholder API
+3. JSON response is parsed and processed
+4. Data is transformed into required format
+5. Formatted response is returned to client
 
-2. **Invalid User ID**:
-```bash
-curl http://127.0.0.1:8000/detailed_post/abc
-```
-Response:
-```json
-{
-    "detail": "Invalid user ID format"
-}
-```
+## 🧪 Testing
+1. Start the server using the instructions above
+2. Access the Swagger UI at `http://127.0.0.1:8000/docs`
+3. Test endpoints with different user IDs and post IDs
+4. Verify JSON response structure matches requirements
 
-## 🚀 Getting Started
+## 👨‍💻 Development Best Practices
+- Efficient JSON parsing and manipulation
+- Proper error handling for API calls
+- Clean code organization
+- Comprehensive API documentation
+- Type safety with Python type hints
 
-1️⃣ **Clone the repository**
-```bash
-git clone https://github.com/echotheworld/ITEC116_Project.git
-cd ITEC116_Project
-cd Lab3
-```
-
-2️⃣ **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-3️⃣ **Run the application**
-```bash
-fastapi run main.py
-```
-
-📍 Access the API at `http://127.0.0.1:8000`
-📚 API documentation at `http://127.0.0.1:8000/docs`
+## 📝 License
+This project is created as part of ITEC116 coursework.
 
 ---
 
 <div align="center">
-Made with ❤️ for ITEC116 Course
+Made with ❤️ for ITEC116 Laboratory Activity 3
 </div> 
