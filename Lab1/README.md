@@ -82,12 +82,6 @@ The application is built using:
 - RESTful architecture principles
 - Efficient algorithmic implementation
 
-## 📊 Performance Metrics
-The implementation is evaluated based on:
-- Algorithm Efficiency (30%)
-- Execution Speed (30%)
-- Output Accuracy (40%)
-
 ## 🧪 Testing
 To test the API:
 1. Start the server using the instructions above
