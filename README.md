@@ -185,8 +185,7 @@ ITEC116_Labs/
 ├── lab3/                 # JSON Processing API
 ├── lab4/                 # Advanced API Implementation
 ├── lab5/                 # Cloud Deployment
-├── requirements.txt      # Project dependencies
-└── README.md            # Project documentation
+└── README.md             # Project documentation
 ```
 
 ## 🔒 Security Considerations
