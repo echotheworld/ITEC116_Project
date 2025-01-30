@@ -21,62 +21,119 @@ The application integrates with JSONPlaceholder API endpoints:
 - Posts: `https://jsonplaceholder.typicode.com/posts`
 - Comments: `https://jsonplaceholder.typicode.com/comments`
 
-## 💻 Implementation
+## 💻 Implementation Details
 
-```python
-# Import necessary modules
-import requests
-import json 
-from fastapi import FastAPI, HTTPException
-from typing import Optional
+### External API Integration
+The application uses JSONPlaceholder API for data:
+- **Posts API**: `https://jsonplaceholder.typicode.com/posts`
+  - Returns list of posts with user IDs
+- **Comments API**: `https://jsonplaceholder.typicode.com/comments`
+  - Returns comments for specific posts
 
-app = FastAPI()
+### Endpoint Documentation
 
-@app.get("/posts/")
-def get_posts(postId: Optional[int] = None):
-    if postId is None:
-        posts = requests.get('https://jsonplaceholder.typicode.com/posts')
-        response = json.loads(posts.text)
-    else:
-        posts = requests.get(f'https://jsonplaceholder.typicode.com/posts/{postId}')
-        response = json.loads(posts.text)
-    return response
+1. **Get Posts**
+   - **Endpoint**: `/posts`
+   - **Method**: GET
+   - **Optional Parameters**: 
+     - `postId` (query parameter): Filter by specific post ID
 
-@app.get("/comments/")
-def get_comments(postId: Optional[int] = None):
-    if postId is None:
-        comments = requests.get('https://jsonplaceholder.typicode.com/comments')
-        response = json.loads(comments.text)
-    else:
-        comments = requests.get(f'https://jsonplaceholder.typicode.com/comments/?postId={postId}')
-        response = json.loads(comments.text)
-    return response
+2. **Get Comments**
+   - **Endpoint**: `/comments`
+   - **Method**: GET
+   - **Optional Parameters**:
+     - `postId` (query parameter): Filter comments by post ID
 
-@app.get("/detailed_post/{userID}")
-def get_detailed_post(userID: int):
-    # Retrieve all posts from the external API
-    posts = get_posts()
-    
-    # Filter posts by userID
-    user_posts = [post for post in posts if post['userId'] == userID]
-    
-    if not user_posts:
-        raise HTTPException(status_code=404, detail=f"User with ID {userID} not found or has no posts")
-    
-    # Prepare response data
-    data = {"userID": userID, "posts": []}
-    
-    # Get posts with comments
-    for post in user_posts:
-        post_comments = get_comments(post['id'])
-        post_data = {
-            "post_title": post["title"],
-            "post_body": post["body"],
-            "comments": post_comments
-        }
-        data["posts"].append(post_data)
-    
-    return data
+3. **Get Detailed Post**
+   - **Endpoint**: `/detailed_post/{userID}`
+   - **Method**: GET
+   - **Parameters**:
+     - `userID` (path parameter): ID of the user to fetch posts for
+
+### Example Usage
+
+1. **Get all posts for a user with their comments**:
+```bash
+curl http://127.0.0.1:8000/detailed_post/1
+```
+Response:
+```json
+{
+    "userID": 1,
+    "posts": [
+        {
+            "post_title": "sunt aut facere repellat provident",
+            "post_body": "quia et suscipit suscipit recusandae...",
+            "comments": [
+                {
+                    "postId": 1,
+                    "id": 1,
+                    "name": "id labore ex et quam laborum",
+                    "email": "Eliseo@gardner.biz",
+                    "body": "laudantium enim quasi est quidem..."
+                },
+                // ... more comments
+            ]
+        },
+        // ... more posts
+    ]
+}
+```
+
+2. **Get specific post**:
+```bash
+curl http://127.0.0.1:8000/posts?postId=1
+```
+Response:
+```json
+{
+    "userId": 1,
+    "id": 1,
+    "title": "sunt aut facere repellat provident",
+    "body": "quia et suscipit suscipit recusandae..."
+}
+```
+
+3. **Get comments for a post**:
+```bash
+curl http://127.0.0.1:8000/comments?postId=1
+```
+Response:
+```json
+[
+    {
+        "postId": 1,
+        "id": 1,
+        "name": "id labore ex et quam laborum",
+        "email": "Eliseo@gardner.biz",
+        "body": "laudantium enim quasi est quidem..."
+    },
+    // ... more comments
+]
+```
+
+### Error Handling
+
+1. **User Not Found**:
+```bash
+curl http://127.0.0.1:8000/detailed_post/999
+```
+Response:
+```json
+{
+    "detail": "User with ID 999 not found or has no posts"
+}
+```
+
+2. **Invalid User ID**:
+```bash
+curl http://127.0.0.1:8000/detailed_post/abc
+```
+Response:
+```json
+{
+    "detail": "Invalid user ID format"
+}
 ```
 
 ## 🚀 Getting Started
