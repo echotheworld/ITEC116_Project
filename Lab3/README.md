@@ -20,9 +20,9 @@ An advanced FastAPI application that demonstrates JSON processing capabilities b
 ## 🚀 Getting Started
 1. Clone the repository:
 ```bash
-git clone https://github.com/jpcanamaque/itec116_it4e_lab.git
-cd itec116_it4e_lab
-cd lab3
+git clone https://github.com/echotheworld/ITEC116_Project.git
+cd ITEC116_Project
+cd Lab3
 ```
 
 2. Set up virtual environment:
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 4. Run the application:
 ```bash
-uvicorn main:app --reload
+fastapi run main.py
 ```
 
 ## 📡 API Endpoints
