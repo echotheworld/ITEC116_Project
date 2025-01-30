@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWc2emVzYTFuOTFnYTRteG40YXVyamZyeDMxcmhkZm1vdzNuMGN0ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/wJBYx2Yh84XS4sTzmz/giphy.gif" alt="FastAPI Animation" width="500"/>
+<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWc2emVzYTFuOTFnYTRteG40YXVyamZyeDMxcmhkZm1vdzNuMGN0ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/wJBYx2Yh84XS4sTzmz/giphy.gif" alt="FastAPI Animation" width="100"/>
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
