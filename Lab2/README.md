@@ -33,34 +33,147 @@ task_db = [
 - Empty strings
 - Data type validation
 
-## 💻 Implementation
+## 💻 Implementation Details
 
-```python
-# Import necessary modules for API functionality
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import Optional
+### Data Models
+- **Task**: The main data structure for tasks
+  - `task_id`: Positive integer
+  - `task_title`: Non-empty string
+  - `task_desc`: Non-empty string
+  - `is_finished`: Boolean
 
-# Initialize the FastAPI application
-app = FastAPI()
+### Endpoint Documentation
 
-# Define the structure for a Task
-class Task(BaseModel):
-    task_id: int = Field(..., gt=0)  # Unique identifier for each task, must be positive
-    task_title: str = Field(..., min_length=1)  # Title of the task, cannot be empty
-    task_desc: str = Field(..., min_length=1)  # Description of the task, cannot be empty
-    is_finished: bool  # Status of the task: completed or not
+1. **Get Task**
+   - **Endpoint**: `/tasks/{task_id}`
+   - **Method**: GET
+   - **Parameters**: 
+     - `task_id` (path parameter): Positive integer
 
-# Structure for creating a new task
-class TaskCreate(BaseModel):
-    task_title: str = Field(..., min_length=1)  # Title for the new task
-    task_desc: str = Field(..., min_length=1)  # Description for the new task
+2. **Create Task**
+   - **Endpoint**: `/tasks`
+   - **Method**: POST
+   - **Request Body**:
+     ```json
+     {
+       "task_title": "string",
+       "task_desc": "string"
+     }
+     ```
 
-# Structure for updating an existing task
-class TaskUpdate(BaseModel):
-    task_title: Optional[str] = Field(None, min_length=1)  # Updated title, if provided
-    task_desc: Optional[str] = Field(None, min_length=1)  # Updated description, if provided
-    is_finished: Optional[bool] = None  # Updated status, if provided
+3. **Update Task**
+   - **Endpoint**: `/tasks/{task_id}`
+   - **Method**: PATCH
+   - **Parameters**:
+     - `task_id` (path parameter): Positive integer
+   - **Request Body** (all fields optional):
+     ```json
+     {
+       "task_title": "string",
+       "task_desc": "string",
+       "is_finished": boolean
+     }
+     ```
+
+4. **Delete Task**
+   - **Endpoint**: `/tasks/{task_id}`
+   - **Method**: DELETE
+   - **Parameters**:
+     - `task_id` (path parameter): Positive integer
+
+### Example Usage
+
+1. **Get a specific task**:
+```bash
+curl http://127.0.0.1:8000/tasks/1
+```
+Response:
+```json
+{
+    "status": "ok",
+    "task": {
+        "task_id": 1,
+        "task_title": "Laboratory Activity",
+        "task_desc": "Create Lab Act 2",
+        "is_finished": false
+    }
+}
+```
+
+2. **Create a new task**:
+```bash
+curl -X POST http://127.0.0.1:8000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"task_title": "New Task", "task_desc": "Task Description"}'
+```
+Response:
+```json
+{
+    "status": "ok",
+    "task": {
+        "task_id": 2,
+        "task_title": "New Task",
+        "task_desc": "Task Description",
+        "is_finished": false
+    }
+}
+```
+
+3. **Update a task**:
+```bash
+curl -X PATCH http://127.0.0.1:8000/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"is_finished": true}'
+```
+Response:
+```json
+{
+    "status": "ok",
+    "task": {
+        "task_id": 1,
+        "task_title": "Laboratory Activity",
+        "task_desc": "Create Lab Act 2",
+        "is_finished": true
+    }
+}
+```
+
+4. **Delete a task**:
+```bash
+curl -X DELETE http://127.0.0.1:8000/tasks/1
+```
+Response:
+```json
+{
+    "status": "ok",
+    "message": "Task deleted successfully"
+}
+```
+
+### Error Handling
+
+1. **Task Not Found**:
+```bash
+curl http://127.0.0.1:8000/tasks/999
+```
+Response:
+```json
+{
+    "error": "Task not found"
+}
+```
+
+2. **Invalid Input**:
+```bash
+curl -X POST http://127.0.0.1:8000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"task_title": "", "task_desc": ""}'
+```
+Response:
+```json
+{
+    "error": "Validation error: task_title and task_desc cannot be empty"
+}
 ```
 
 ## 🚀 Getting Started
