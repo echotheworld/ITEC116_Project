@@ -161,14 +161,24 @@ Final implementation demonstrating cloud deployment capabilities using Render.
 1️⃣ **Clone the repository**
 ```bash
 git clone https://github.com/echotheworld/ITEC116_Project.git
+cd ITEC116_Project
+cd Lab<number> #Change the number to your desired laboratory activity
 ```
 
-2️⃣ **Install dependencies**
+2️⃣ **Set up virtual environment**
+```bash
+python -m venv .venv
+source .venv/bin/activate  # For Unix/macOS
+# or
+.venv\Scripts\activate     # For Windows
+```
+
+3️⃣ **Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-3️⃣ **Run the application**
+4️⃣ **Run the application**
 ```bash
 fastapi run main.py
 ```
