@@ -1,4 +1,4 @@
-# Laboratory Activity 2: Working with HTTP actions and API parameters ✅
+# Laboratory Activity 2: Working with HTTP actions and API parameters
 
 A complete task management system implementing CRUD operations with proper data validation.
 
@@ -69,6 +69,7 @@ class TaskUpdate(BaseModel):
 ```bash
 git clone https://github.com/echotheworld/ITEC116_Project.git
 cd ITEC116_Project
+cd Lab2
 ```
 
 2️⃣ **Install dependencies**
@@ -78,7 +79,6 @@ pip install -r requirements.txt
 
 3️⃣ **Run the application**
 ```bash
-cd Lab2
 fastapi run main.py
 ```
 
