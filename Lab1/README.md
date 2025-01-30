@@ -49,6 +49,8 @@ def calculate_factorial(value: int):
 1️⃣ **Clone the repository**
 ```bash
 git clone https://github.com/echotheworld/ITEC116_Project.git
+cd ITEC116_Project
+cd Lab1
 ```
 
 2️⃣ **Install dependencies**
