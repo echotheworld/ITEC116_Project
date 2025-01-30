@@ -1,134 +1,169 @@
-# Laboratory Activity #4: Advanced API Implementation 🔐
+# Laboratory Activity #4: Advanced API Implementation
 
-Enterprise-level implementation featuring versioning, authentication, and proper HTTP status code handling.
+## 📚 Overview
+An advanced FastAPI application demonstrating professional API development practices including versioning, authentication, and proper HTTP status code handling. This project builds upon the To-Do List API from Laboratory Activity #2, implementing multiple API versions and secure authentication.
 
 ## 🎯 Objectives
+- Implement API versioning (v1 and v2)
+- Add API key authentication
+- Handle HTTP exceptions properly
+- Manage environment variables securely
+- Apply REST API best practices
 
-- Implement versioning, authentication, and proper HTTP exception handling in developing API
-- Implement best practices in handling environment variables
+## 🛠 Technical Requirements
+- Python 3.7+
+- FastAPI
+- python-dotenv
+- Pydantic
+- Uvicorn (ASGI server)
 
-## 📋 Requirements
+## 🔐 Security Setup
+1. Create a `.env` file in the root directory:
+```bash
+API_KEY=your_api_key_here
+```
 
-### API Versioning
-- Version 1: `/apiv1/tasks`
-- Version 2: `/apiv2/tasks` (with API key authentication)
-
-### HTTP Status Codes
-1. Error Cases (404):
-   - Task not found in list
-   - Delete non-existent task
-   - Update non-existent task
-
-2. Success Cases:
-   - Task added (201)
-   - Task updated (204)
-   - Task deleted (204)
-   - No tasks found (204)
-   - General success (200)
-
-### Authentication
-- API key required for v2 endpoints
-- Key stored in `.env` file
-- `.gitignore` configuration to exclude `.env`
-
-## 💻 Implementation
-
-```python
-from fastapi import FastAPI, HTTPException, Depends, Header
-from fastapi.security.api_key import APIKey
-from pydantic import BaseModel, Field
-from typing import Optional, List
-import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
-
-app = FastAPI()
-
-# API Key authentication
-async def get_api_key(api_key: str = Header(None)):
-    if api_key is None or api_key != API_KEY:
-        raise HTTPException(
-            status_code=403,
-            detail="Invalid or missing API Key"
-        )
-    return api_key
-
-# Example v1 endpoint (no authentication)
-@app.get("/apiv1/tasks", status_code=200)
-def read_task_v1(task_id: Optional[int] = None):
-    if task_id is not None:
-        if task_id <= 0:
-            raise HTTPException(status_code=400, detail={"error": "Task ID must be a positive integer"})
-        task = next((task for task in task_db if task["task_id"] == task_id), None)
-        if task:
-            return {"status": "ok", "task": task}
-        raise HTTPException(status_code=404, detail={"error": "Task not found"})
-    
-    if not task_db:
-        raise HTTPException(status_code=204, detail={"error": "No tasks found"})
-    return {"status": "ok", "tasks": task_db}
-
-# Example v2 endpoint (with authentication)
-@app.get("/apiv2/tasks", status_code=200)
-def read_task_v2(task_id: Optional[int] = None, api_key: APIKey = Depends(get_api_key)):
-    return read_task_v1(task_id)
+2. Add `.env` to your `.gitignore`:
+```bash
+# .gitignore
+.env
+__pycache__/
+.venv/
 ```
 
 ## 🚀 Getting Started
-
-1️⃣ **Clone the repository**
+1. Clone the repository:
 ```bash
-git clone https://github.com/echotheworld/ITEC116_Project.git
-cd ITEC116_Project
-cd Lab4
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
 ```
 
-2️⃣ **Install dependencies**
+2. Set up virtual environment:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # For Unix/macOS
+# or
+.venv\Scripts\activate     # For Windows
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3️⃣ **Configure environment**
+4. Run the application:
 ```bash
-# Create .env file (DO NOT COMMIT THIS FILE)
-touch .env
-
-# Create .gitignore
-echo ".env" > .gitignore
+uvicorn main:app --reload
 ```
 
-Add your API key to the `.env` file:
-- Create a secure API key (recommended: at least 32 characters)
-- Never share your API key
-- Format in .env file: `API_KEY=your_secret_key`
+## 📡 API Endpoints
 
-4️⃣ **Run the application**
-```bash
-fastapi run main.py
+### API Version 1 (No Authentication)
+
+#### 1. Get Tasks
+```http
+GET /apiv1/tasks?task_id={task_id}
+```
+- Status Code 200: Success
+- Status Code 204: No tasks found
+- Status Code 404: Task not found
+
+#### 2. Create Task
+```http
+POST /apiv1/tasks
+```
+- Status Code 201: Task created
+
+#### 3. Update Task
+```http
+PATCH /apiv1/tasks/{task_id}
+```
+- Status Code 204: Task updated
+- Status Code 404: Task not found
+
+#### 4. Delete Task
+```http
+DELETE /apiv1/tasks/{task_id}
+```
+- Status Code 204: Task deleted
+- Status Code 404: Task not found
+
+### API Version 2 (With Authentication)
+
+All v2 endpoints require an API key in the header:
+```http
+X-API-Key: your_api_key_here
 ```
 
-📍 Access the API at `http://127.0.0.1:8000`
-📚 API documentation at `http://127.0.0.1:8000/docs`
+#### 1. Get Tasks
+```http
+GET /apiv2/tasks?task_id={task_id}
+```
 
-## 🔑 Authentication
+#### 2. Create Task
+```http
+POST /apiv2/tasks
+```
 
-⚠️ **Security Notes:**
-- Keep your API key secret
-- Never commit the `.env` file
-- Regenerate the key if compromised
-- Use HTTPS in production
-- Implement rate limiting for security
+#### 3. Update Task
+```http
+PATCH /apiv2/tasks/{task_id}
+```
 
-To use v2 endpoints:
-1. Add your API key to the request header
-2. Use proper authorization in all v2 endpoint calls
-3. Handle 403 errors for invalid/missing keys
+#### 4. Delete Task
+```http
+DELETE /apiv2/tasks/{task_id}
+```
+
+## 🔒 Authentication
+- API Key required for all v2 endpoints
+- Key must be provided in request header
+- Invalid or missing key returns 403 Forbidden
+
+## 📊 HTTP Status Codes
+| Code | Description | Usage |
+|------|-------------|-------|
+| 200 | OK | Successful GET request |
+| 201 | Created | Successful task creation |
+| 204 | No Content | Successful update/delete or no tasks |
+| 400 | Bad Request | Invalid input |
+| 403 | Forbidden | Invalid/missing API key |
+| 404 | Not Found | Task not found |
+
+## 💡 Implementation Details
+- Dual API versions (v1 and v2)
+- Environment variable management
+- Comprehensive error handling
+- Status code implementation
+- Secure API key validation
+
+## ⚙️ Technical Architecture
+The application uses:
+- FastAPI for API framework
+- python-dotenv for environment variables
+- Pydantic models for data validation
+- FastAPI security for API key authentication
+- HTTPException for error handling
+
+## 🧪 Testing
+1. Start the server using the instructions above
+2. Test v1 endpoints without authentication
+3. Test v2 endpoints with API key
+4. Verify proper status codes
+5. Test error scenarios
+
+## 👨‍💻 Development Best Practices
+- Secure API key handling
+- Proper HTTP status codes
+- Clean code organization
+- Comprehensive error handling
+- Type safety with Pydantic
+
+## 📝 License
+This project is created as part of ITEC116 coursework.
 
 ---
 
 <div align="center">
-Made with ❤️ for ITEC116 Course
+Made with ❤️ for ITEC116 Laboratory Activity 4
 </div> 
