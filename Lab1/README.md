@@ -101,5 +101,5 @@ This project is created as part of ITEC116 coursework.
 ---
 
 <div align="center">
-Made with ❤️ for ITEC116 Laboratory Activity
+Made with ❤️ for ITEC116 Laboratory Activity 1
 </div> 
