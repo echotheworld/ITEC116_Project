@@ -18,30 +18,48 @@ A fundamental FastAPI application implementing factorial calculations with speci
   - If the value inputted is 0, return `{"result": false}`
   - Implement using a while loop
 
-## 💻 Implementation
+## 💻 Implementation Details
 
-```python
-from typing import Union
-from fastapi import FastAPI
+### Endpoint Documentation
+- **Endpoint**: `/factorial/{starting_number}`
+- **Method**: GET
+- **Parameters**: 
+  - `starting_number` (path parameter): An integer value to calculate its factorial
 
-app = FastAPI()
+### Example Usage
 
-@app.get("/factorial/{value}")
-def calculate_factorial(value: int):
-    if value < 0:
-        return {"error": "Value must be a non-negative integer."}
-    
-    if value == 0:
-        return {"result": False}  # Return false for input value of 0
+1. Calculate factorial of 5:
+```bash
+curl http://127.0.0.1:8000/factorial/5
+```
+Response:
+```json
+{
+    "result": 120
+}
+```
 
-    factorial = 1
-    counter = 1
+2. Input value of 0:
+```bash
+curl http://127.0.0.1:8000/factorial/0
+```
+Response:
+```json
+{
+    "result": false
+}
+```
 
-    while counter <= value:
-        factorial *= counter
-        counter += 1
-
-    return {"result": factorial}
+### Error Handling
+- **Negative Numbers**:
+```bash
+curl http://127.0.0.1:8000/factorial/-1
+```
+Response:
+```json
+{
+    "error": "Value must be a non-negative integer."
+}
 ```
 
 ## 🚀 Getting Started
